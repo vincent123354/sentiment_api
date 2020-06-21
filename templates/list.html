@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% block head %}{% endblock %}
+</head>
+<body style="background: #CCE5FF">
+    <div class="jumbotron" style="background: url(https://cdn-images-1.medium.com/max/1200/1*29XAq2WrtejUCxRzSgDLXA.png) no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
+        <p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+    </div>
+    <div >
+        <div class="m-5 pb-5">
+            <div class="d-flex justify-content-center align-items-center" style=" height:100px">
+                <h1 class="display-3">Sentiment Analysis</h1>
+            </div>
+            <div class="d-flex justify-content-center align-items-center" style=" height:100px">
+                <form action="/task" method="post">
+                    <textarea class="form-control" aria-label="With textarea" type="text" name="content"></textarea>
+                    <input type="submit" value="Predict Sentiment" class="btn btn-primary">
+                </form>            
+            </div>
+
+            <ul class="list-group">
+            {% for task in tasks %}
+                <li class="list-group-item">
+                    <div class="d-flex bd-highlight mb-3">
+                        <div class="p-2 bd-highlight ">
+                            <span class="badge badge-info" id="sentimentScore">
+                                {{ '%.2f' | format(task.done) }} 
+                            </span>
+                        </div>
+
+                        <div class="mr-auto p-2 bd-highlight">
+                            {{ task.content }}
+                        </div>
+                        
+                        <a class="nav-link close" aria-label="Close" href="/delete/{{ task.id }}">  
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        var element = document.getElementsByClassName('list-group')[0];
+        var liElement = element.getElementsByTagName('li');
+        for (var i=0; i< liElement.length; i++) {
+            var spanElement = liElement[i].getElementsByTagName('span')[0];
+            var score = parseFloat(spanElement.innerHTML);
+            if (score < 0) {
+                spanElement.className = "badge badge-warning"
+            }
+            else if (score > 0) {
+                spanElement.className = "badge badge-success"
+            }
+            else {
+                spanElement.className = "badge badge-secondary"
+            }
+        }
+        
+    </script>
+</body>
+</html>
