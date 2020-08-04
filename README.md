@@ -1,1 +1,1 @@
-# sentiment_api
+# Sentiment Score API
